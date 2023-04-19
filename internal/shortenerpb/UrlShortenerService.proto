@@ -1,0 +1,24 @@
+syntax = "proto3";
+package shortener;
+option go_package = "shortenerpb/shortener";
+
+service UrlShortener {
+  rpc ShortenUrl(ShortenURLRequest) returns (ShortenURLResponse);
+  rpc ExtractUrl(ExtractURLRequest) returns (ExtractURLResponse);
+}
+
+message ShortenURLRequest {
+  string origin_url = 1;
+}
+
+message ShortenURLResponse {
+  string shortened_url = 1;
+}
+
+message ExtractURLRequest {
+  string shortened_url = 1;
+}
+
+message ExtractURLResponse {
+  string origin_url = 1;
+}
