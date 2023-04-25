@@ -5,7 +5,7 @@ import (
 	"errors"
 	"github.com/sirupsen/logrus"
 	"math/rand"
-	"shortener/pkg/utils"
+	"shortener/internal/pkg/utils"
 	"time"
 )
 

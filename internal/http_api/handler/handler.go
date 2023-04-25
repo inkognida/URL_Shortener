@@ -7,7 +7,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
-	repo "shortener/pkg/repository"
+	repo "shortener/internal/repository"
 )
 
 var storage repo.StorageType

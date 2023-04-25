@@ -7,7 +7,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"math/rand"
 	"os"
-	"shortener/pkg/utils"
+	"shortener/internal/pkg/utils"
 	"time"
 	"github.com/jackc/pgx/v4/pgxpool"
 )

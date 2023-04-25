@@ -9,8 +9,8 @@ import (
 	"net"
 	"os"
 	"os/signal"
-	shortener "shortener/pkg/api/grpc"
-	repo "shortener/pkg/repository"
+	shortener "shortener/internal/pkg/pb"
+	repo "shortener/internal/repository"
 	"syscall"
 )
 

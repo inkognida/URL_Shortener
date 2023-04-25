@@ -3,8 +3,8 @@ package repo
 import (
 	"context"
 	"github.com/sirupsen/logrus"
-	"shortener/pkg/repository/data"
-	"shortener/pkg/repository/postgres"
+	"shortener/internal/repository/data"
+	"shortener/internal/repository/postgres"
 )
 
 // StorageType интерфейс хранилища

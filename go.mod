@@ -4,7 +4,6 @@ go 1.18
 
 require (
 	github.com/go-chi/chi v1.5.4
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.2
 	github.com/jackc/pgx/v4 v4.18.1
 	github.com/pkg/errors v0.8.1
 	github.com/sirupsen/logrus v1.9.0

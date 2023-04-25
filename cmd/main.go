@@ -3,8 +3,8 @@ package main
 import (
 	"github.com/sirupsen/logrus"
 	"os"
-	"shortener/pkg/api/server"
-	"shortener/pkg/http_api/service"
+	"shortener/internal/grpc_api/server"
+	"shortener/internal/http_api/service"
 )
 
 func main() {

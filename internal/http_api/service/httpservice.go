@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"shortener/pkg/http_api/handler"
+	"shortener/internal/http_api/handler"
 	"syscall"
 	"time"
 )
