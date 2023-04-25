@@ -1,6 +1,7 @@
 package data
 
 import (
+	"context"
 	"errors"
 	"github.com/sirupsen/logrus"
 	"math/rand"
@@ -14,21 +15,22 @@ type Data struct {
 	logger *logrus.Logger
 }
 
-func (d *Data) Init() {
+func (d *Data) Init(ctx context.Context, logger *logrus.Logger) error {
 	d.urls = make(map[string]string)
 	d.urlsID = make(map[int64]struct{})
+	d.logger = logger
+	return nil
 }
 
-func (d *Data) GetUrl(shortUrl string) (string, error) {
+func (d *Data) GetUrl(ctx context.Context, shortUrl string) (string, error) {
 	if url, ok := d.urls[shortUrl]; ok {
 		return url, nil
 	}
-	return "", errors.New("url not found")
+	return "", errors.New("no such link")
 }
 
-func (d *Data) SaveUrl(originalUrl string) (string, error) {
+func (d *Data) SaveUrl(ctx context.Context, originalUrl string) (string, error) {
 	rand.Seed(time.Now().UnixNano())
-	// TODO fix forever running
 	for {
 		id := rand.Int63()
 		if _, ok := d.urlsID[id]; !ok {

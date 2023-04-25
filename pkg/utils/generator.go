@@ -7,12 +7,14 @@ const (
 )
 
 func GenerateLink(shortId int64) string {
-	if shortId < 0 {
-		shortId = -shortId
+	res := make([]byte, 10)
+	for i := 0; i < linkLength; i++ {
+		if shortId > 0 {
+			res[i] = charset[shortId%charsetLength]
+			shortId /= charsetLength
+		} else {
+			res[i] = charset[shortId%charsetLength]
+		}
 	}
-	var b [11]byte
-	for i := linkLength; shortId > 0 && i > 0; i-- {
-		shortId, b[i] = shortId/charsetLength, charset[shortId%charsetLength]
-	}
-	return string(b[:])
+	return string(res)
 }
