@@ -9,8 +9,13 @@ import (
 
 // StorageType интерфейс хранилища
 type StorageType interface {
+	// Init инициализация хранилища
 	Init(ctx context.Context, logger *logrus.Logger) error
+
+	// GetUrl возвращает оригинальную ссылку по сокращенной
 	GetUrl(ctx context.Context, shortUrl string) (string, error)
+
+	// SaveUrl сохрняет сокращенный вариант ссылки и возвращает ее
 	SaveUrl(ctx context.Context, originalUrl string) (string, error)
 }
 
