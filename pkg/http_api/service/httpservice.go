@@ -11,6 +11,7 @@ import (
 	"time"
 )
 
+// process функция для обработки состояния сервера
 func process(logger *logrus.Logger, srv *http.Server) (<-chan error, error) {
 	errC := make(chan error, 1)
 	ctx, stop := signal.NotifyContext(context.Background(),
@@ -40,6 +41,7 @@ func process(logger *logrus.Logger, srv *http.Server) (<-chan error, error) {
 	return errC, nil
 }
 
+// Execute функция для создания нового обработчка и сервера
 func Execute(logger *logrus.Logger, dataMode string) {
 	srv, err := handler.NewHandler(dataMode, logger)
 	if err != nil {

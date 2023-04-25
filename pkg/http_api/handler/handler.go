@@ -12,6 +12,7 @@ import (
 
 var storage repo.StorageType
 
+// NewHandler функция для создания нового обработчика с параметром для хранилища
 func NewHandler(storageMode string, logger *logrus.Logger) (chi.Router, error) {
 	router := chi.NewRouter()
 	router.Use(middleware.Logger)
@@ -28,6 +29,7 @@ func NewHandler(storageMode string, logger *logrus.Logger) (chi.Router, error) {
 	return router, nil
 }
 
+// SaveUrl сокращение оригинальной ссылки
 func SaveUrl(w http.ResponseWriter, r *http.Request) {
 	bodyBytes, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -48,6 +50,7 @@ func SaveUrl(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write([]byte(shortUrl))
 }
 
+// GetUrl поулчение оригинальной ссылки по сокращенной
 func GetUrl(w http.ResponseWriter, r *http.Request) {
 	shortUrl := chi.URLParam(r, "shortUrl")
 	originalURL, err := storage.GetUrl(context.Background(), shortUrl)

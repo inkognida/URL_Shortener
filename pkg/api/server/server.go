@@ -20,6 +20,7 @@ type server struct {
 	logger *logrus.Logger
 }
 
+// ShortenUrl метод для сокращения оригинальной ссылки
 func (s *server) ShortenUrl(ctx context.Context, request *shortener.ShortenURLRequest) (*shortener.ShortenURLResponse, error) {
 	if request.OriginUrl == "" {
 		s.logger.Infoln("empty link via request:", request.OriginUrl)
@@ -35,6 +36,7 @@ func (s *server) ShortenUrl(ctx context.Context, request *shortener.ShortenURLRe
 	return &shortener.ShortenURLResponse{ShortenedUrl: link}, nil
 }
 
+// ExtractUrl метод для получения оригинальной ссылки по сокращенной
 func (s *server) ExtractUrl(ctx context.Context, request *shortener.ExtractURLRequest) (*shortener.ExtractURLResponse, error) {
 	if request.ShortenedUrl == "" || len(request.ShortenedUrl) != 10 {
 		s.logger.Infoln("wrong link parameter via request:", request.ShortenedUrl)
@@ -50,7 +52,8 @@ func (s *server) ExtractUrl(ctx context.Context, request *shortener.ExtractURLRe
 	return &shortener.ExtractURLResponse{OriginUrl: link}, nil
 }
 
-func InitServer(storageMode string, logger *logrus.Logger) shortener.UrlShortenerServer {
+// InitServer функция инициализирует сервер с параметрамом для храналища
+func InitServer(logger *logrus.Logger, storageMode string) shortener.UrlShortenerServer {
 	srv := &server{logger: logger}
 	storage, err := repo.NewRepo(storageMode, logger)
 	if err != nil {
@@ -60,9 +63,10 @@ func InitServer(storageMode string, logger *logrus.Logger) shortener.UrlShortene
 	return srv
 }
 
-func Execute(logger *logrus.Logger, dataMode string) {
+// Execute создает и запускает новый grpc сервер
+func Execute(logger *logrus.Logger, storageMode string) {
 	srv := grpc.NewServer()
-	shortener.RegisterUrlShortenerServer(srv, InitServer(dataMode, logger))
+	shortener.RegisterUrlShortenerServer(srv, InitServer(logger, storageMode))
 
 	listen, err := net.Listen("tcp", ":8000")
 	if err != nil {

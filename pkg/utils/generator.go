@@ -6,6 +6,7 @@ const (
 	charsetLength = int64(len(charset))
 )
 
+// GenerateLink генерирует уникальную ссылку
 func GenerateLink(shortId int64) string {
 	res := make([]byte, 10)
 	for i := 0; i < linkLength; i++ {

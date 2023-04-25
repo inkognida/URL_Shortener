@@ -10,11 +10,11 @@ import (
 func main() {
 	logger := logrus.New()
 
-	dataMode := os.Getenv("STORAGE_MODE")
+	storageMode := os.Getenv("STORAGE_MODE")
 	serviceMode := os.Getenv("SERVICE_MODE")
 	if serviceMode == "grpc" {
-		server.Execute(logger, dataMode)
+		server.Execute(logger, storageMode)
 	} else { //http
-		httpService.Execute(logger, dataMode)
+		httpService.Execute(logger, storageMode)
 	}
 }
