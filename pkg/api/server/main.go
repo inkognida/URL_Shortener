@@ -3,10 +3,15 @@ package server
 import (
 	"context"
 	"github.com/sirupsen/logrus"
+	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"net"
+	"os"
+	"os/signal"
 	shortener "shortener/pkg/api/grpc"
 	repo "shortener/pkg/repository"
+	"syscall"
 )
 
 type server struct {
@@ -53,5 +58,43 @@ func InitServer(storageMode string, logger *logrus.Logger) shortener.UrlShortene
 	}
 	srv.storage = storage
 	return srv
+}
+
+func Execute(logger *logrus.Logger, dataMode string) {
+	srv := grpc.NewServer()
+	shortener.RegisterUrlShortenerServer(srv, InitServer(dataMode, logger))
+
+	listen, err := net.Listen("tcp", ":8000")
+	if err != nil {
+		logger.Log(logrus.FatalLevel, err)
+	}
+	errC := make(chan error, 1)
+	ctx, stop := signal.NotifyContext(context.Background(),
+		os.Interrupt, syscall.SIGTERM, syscall.SIGQUIT)
+
+	go func() {
+		<-ctx.Done()
+		logger.Log(logrus.DebugLevel, "got signal, starting graceful shutdown")
+		defer func() {
+			stop()
+			close(errC)
+		}()
+		srv.GracefulStop()
+	}()
+
+	logger.Infoln("starting grpc server")
+	go func() {
+		if err = srv.Serve(listen); err != nil {
+			errC <- err
+		}
+	}()
+
+	if err = <-errC; err != nil {
+		logger.Log(logrus.DebugLevel, "could not serve", err)
+	}
+
+	if err = <-errC; err != nil {
+		logger.Fatalln("Error while execution", err)
+	}
 }
 
